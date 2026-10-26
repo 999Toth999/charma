@@ -1,0 +1,19 @@
+{
+  "name": "charma",
+  "version": "0.1.0",
+  "description": "Character behavioural percentage framework: quantify personalities of known figures with explainable 0-100 trait metrics.",
+  "type": "module",
+  "bin": {
+    "charma": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  }
+}
