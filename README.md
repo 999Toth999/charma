@@ -60,3 +60,13 @@ Scores are triangulated behavioural estimates, **not** clinical or psychological
 ## License
 
 MIT
+
+## Chat with a character
+
+```bash
+charma chat --character steve-jobs --message "Tell me why I should change the world."
+```
+
+Uses the behavioural profile to build an in-character system prompt and sends it to an OpenAI-compatible LLM endpoint.
+
+Set `CHARMA_API_KEY` (or `OPENAI_API_KEY`) and optionally `CHARMA_BASE_URL` / `CHARMA_MODEL` to point at a compatible provider.

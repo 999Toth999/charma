@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { CHARACTER_PROFILES } from './profiles.js';
 import { scoreAllProfiles } from './engine.js';
+import { buildSystemPrompt, chatWithCharacter } from './chat.js';
 import type { ScoredProfile } from './types.js';
 
 const args = process.argv.slice(2);
@@ -13,9 +14,11 @@ function getFlagValue(flag: string): string | undefined {
   return value;
 }
 
-function main(): void {
+async function main(): Promise<void> {
   const characterId = getFlagValue('--character') ?? 'steve-jobs';
   const asJson = args.includes('--json');
+  const message = getFlagValue('--message');
+  const model = getFlagValue('--model') ?? undefined;
 
   const scored = scoreAllProfiles(CHARACTER_PROFILES).find((p) => p.id === characterId);
 
@@ -23,6 +26,14 @@ function main(): void {
     console.error(`Unknown character: ${characterId}`);
     console.error(`Known characters: ${CHARACTER_PROFILES.map((p) => p.id).join(', ')}`);
     process.exit(1);
+  }
+
+  const wantsChat = args.includes('--chat') || Boolean(message);
+  if (wantsChat) {
+    const userMessage = message ?? 'Hello, who are you?';
+    const response = await chatWithCharacter(scored, userMessage, { model });
+    console.log(response);
+    return;
   }
 
   if (asJson) {
@@ -39,4 +50,7 @@ function main(): void {
   }
 }
 
-main();
+main().catch((error: unknown) => {
+  console.error(error instanceof Error ? error.message : String(error));
+  process.exit(1);
+});
